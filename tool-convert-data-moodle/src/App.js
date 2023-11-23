@@ -31,6 +31,22 @@ function App() {
     setInputValue('');
   };
 
+  const handleDownload = () => {
+    const array = multiInputValue.split('\n').filter((element) => element !== '');
+    array.forEach((content, index) => {
+      const fileName = `${content}.txt`;
+      const blob = new Blob([''], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
   return (
     <div className='container'>
       <div className='content-container'>
@@ -73,7 +89,7 @@ function App() {
               rowsMin={3}
               style={{ width: '50%' }}
             />
-            <Button className='buttonDownload' variant="contained" onClick={handleAddInput}>
+            <Button className='buttonDownload' variant="contained" onClick={handleDownload}>
               Download
             </Button>
           </div>
